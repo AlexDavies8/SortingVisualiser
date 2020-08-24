@@ -7,17 +7,17 @@
         <script src="index.js"></script>
     </head>
     <body>
-        <ul class="nav-bar">
-            <li class="nav-item active"><a>Page 1</a></li>
-            <li class="nav-item"><a>Page 2</a></li>
-            <li class="nav-item"><a>Page 3</a></li>
-            <li class="nav-item"><a>Settings</a></li>
-        </ul>
         <div class="content">
+            <div class="controls-container">
+                <select id="sort-selector"></select>
+                <label for="speed-slider">Speed</label>
+                <input type="range" min="0" max="1" value="0.5" step="0.01" id="speed-slider" onchange="setSpeed(this.value)">
+                <label for="count-slider">Count</label>
+                <input type="range" min="0" max="1" value="0.5" step="0.01" id="count-slider" onchange="setCount(this.value)">
+                <button class="bottom-control" onclick="runSort()">Run</button>
+            </div>
             <div class="sort-container">
                 <div class="sort-visualiser"></div>
-                <button onclick="runBubbleSort()">Bubble</button>
-                <button onclick="runSelectionSort()">Selection</button>
             </div>
         </div>
     </body>

@@ -1,30 +1,66 @@
-const n = 20;
-const delay = 50;
+var n = 20;
+var delay = 50;
+
+var selectedSortID = "bubble";
+var intervalTimer;
 
 bars = [];
 
-function runBubbleSort() {
-    createBars(n);
-
-    sortingElements = generateRandom(n);
-    var iterator = bubbleSort(sortingElements);
-
-    runSort(iterator);
+sortIDs = {
+    "bubble" : {
+        name : "Bubble Sort",
+        generator : bubbleSort
+    },
+    "selection" : {
+        name : "Selection Sort",
+        generator : selectionSort
+    },
+    "bogo" : {
+        name : "Bogo Sort",
+        generator : bogoSort
+    }
 };
 
+window.onload = function(e) {
+    var sortSelector = document.getElementById("sort-selector");
+    sortSelector.addEventListener("change", () => {
+        setSort(sortSelector.value);
+    });
+    var keys = Object.keys(sortIDs);
+    for (var i = 0; i < keys.length; i++)
+    {
+        var option = document.createElement("option");
+        option.value = keys[i];
+        option.innerHTML = sortIDs[keys[i]].name;
 
-function runSelectionSort() {
-    createBars(n);
-
-    sortingElements = generateRandom(n);
-    var iterator = selectionSort(sortingElements);
-
-    runSort(iterator);
+        sortSelector.appendChild(option);
+    }
 };
 
-function runSort(iterator) {
+const sqr = (x) => x*x; 
+
+function setCount(f) {
+    n = 5 + sqr(10*f);
+}
+
+function setSpeed(f) {
+    delay = 1 + 999 * sqr(sqr(1 - f));
+}
+
+function setSort(id) {
+    selectedSortID = id;
+}
+
+function runSort() {
+    clearInterval(intervalTimer);
+
+    createBars(n);
+
+    var sortingElements = generateRandom(n);
+    var iterator = sortIDs[selectedSortID].generator(sortingElements);
+
     step(iterator);
-    var intervalTimer = setInterval(() => {
+    intervalTimer = setInterval(() => {
         step(iterator, () => {
             clearInterval(intervalTimer);
             updateBars(sortingElements);
@@ -37,7 +73,7 @@ function step(iterator, doneCallback = null)
     var {value, done} = iterator.next();
     if (done)
     {
-        doneCallback();
+        if (doneCallback) doneCallback();
         return;
     }
     var [elements, selected] = value;

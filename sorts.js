@@ -20,7 +20,6 @@ function* bubbleSort(elements) {
         }
         if (!swap) return;
     }
-    return;
 }
 
 function* selectionSort(elements) {
@@ -44,5 +43,32 @@ function* selectionSort(elements) {
 
         yield [elements, [min, i]];
     }
-    return;
+}
+
+function* bogoSort(elements) {
+    var n = elements.length;
+    var sorted = false;
+    while (!sorted)
+    {
+        for (var i = n - 1; i >= 0; i--)
+        {
+            var j = Math.floor(Math.random() * i + 1);
+            
+            var temp = elements[j];
+            elements[j] = elements[i];
+            elements[i] = temp;
+            
+            yield [elements, [i, j]];
+        }
+        var sorted = true;
+        for (var i = 0; i < n - 1; i++)
+        {
+            if (elements[i] > elements[i+1])
+            {
+                sorted = false;
+                break;
+            }
+            yield [elements, [i, i+1]];
+        }
+    }
 }
