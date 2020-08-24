@@ -72,3 +72,40 @@ function* bogoSort(elements) {
         }
     }
 }
+
+function* quickSort(elements) {
+    yield* quickSortRecurse(elements, 0, elements.length - 1);
+}
+
+function* quickSortRecurse(elements, low, high) {
+    if (low < high)
+    {
+        var i = yield* partitionLast(elements, low, high);
+
+        yield* quickSortRecurse(elements, low, i - 1);
+        yield* quickSortRecurse(elements, i + 1, high);
+    }
+}
+
+function* partitionLast(elements, low, high) {
+    var i = low - 1;
+    var pivot = elements[high];
+
+    for (var j = low; j < high; j++)
+    {
+        yield [elements, [high, j, i]];
+
+        if (elements[j] <= pivot)
+        {
+            i++;
+            [elements[i], elements[j]] = [elements[j], elements[i]];
+            
+            yield [elements, [high, j, i]];
+        }
+    }
+    [elements[i + 1], elements[high]] = [elements[high], elements[i + 1]];
+
+    yield [elements, [high, i + 1]];
+
+    return i + 1;
+}

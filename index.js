@@ -15,6 +15,10 @@ sortIDs = {
         name : "Selection Sort",
         generator : selectionSort
     },
+    "quick" : {
+        name : "Quick Sort",
+        generator : quickSort
+    },
     "bogo" : {
         name : "Bogo Sort",
         generator : bogoSort
